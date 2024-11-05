@@ -14,7 +14,15 @@ router = APIRouter(
 
 
 # Получение списка доступных товаров
-@router.get("/listProducts", response_model=List[ProductResponse])
+@router.get(
+    "/listProducts",
+    response_model=List[ProductResponse],
+    summary="Список доступных продуктов",
+    description="Получение списка доступных продуктов и услуг.",
+    responses={
+        200: {"description": "Список продуктов"},
+    }
+)
 def list_products(
         db: Session = Depends(get_db),
         skip: int = 0,
@@ -25,7 +33,17 @@ def list_products(
 
 
 # Добавление нового товара (только для администратора)
-@router.post("/addProduct", response_model=ProductResponse)
+@router.post(
+    "/addProduct",
+    response_model=ProductResponse,
+    summary="Добавить новый продукт",
+    description="Добавляет новый продукт или услугу в каталог (только для администратора).",
+    responses={
+        200: {"description": "Продукт успешно добавлен"},
+        401: {"description": "Неавторизованный доступ"},
+        403: {"description": "Недостаточно прав"},
+    }
+)
 def add_product(
         product: ProductCreate,
         db: Session = Depends(get_db),
@@ -39,7 +57,16 @@ def add_product(
 
 
 # Получение информации о товаре по ID
-@router.get("/getProduct/{product_id}", response_model=ProductResponse)
+@router.get(
+    "/getProduct/{product_id}",
+    response_model=ProductResponse,
+    summary="Получить информацию о продукте",
+    description="Возвращает информацию о продукте по его ID.",
+    responses={
+        200: {"description": "Информация о продукте"},
+        404: {"description": "Продукт не найден"},
+    }
+)
 def get_product(
         product_id: int,
         db: Session = Depends(get_db),
@@ -51,7 +78,18 @@ def get_product(
 
 
 # Обновление товара (только для администратора)
-@router.put("/updateProduct/{product_id}", response_model=ProductResponse)
+@router.put(
+    "/updateProduct/{product_id}",
+    response_model=ProductResponse,
+    summary="Обновить продукт",
+    description="Обновляет информацию о продукте (только для администратора).",
+    responses={
+        200: {"description": "Продукт успешно обновлен"},
+        404: {"description": "Продукт не найден"},
+        401: {"description": "Неавторизованный доступ"},
+        403: {"description": "Недостаточно прав"},
+    }
+)
 def update_product(
         product_id: int,
         product_update: ProductUpdate,
@@ -69,7 +107,17 @@ def update_product(
 
 
 # Удаление товара (только для администратора)
-@router.delete("/deleteProduct/{product_id}")
+@router.delete(
+    "/deleteProduct/{product_id}",
+    summary="Удалить продукт",
+    description="Удаляет продукт из каталога (только для администратора).",
+    responses={
+        200: {"description": "Продукт успешно удален"},
+        404: {"description": "Продукт не найден"},
+        401: {"description": "Неавторизованный доступ"},
+        403: {"description": "Недостаточно прав"},
+    }
+)
 def delete_product(
         product_id: int,
         db: Session = Depends(get_db),

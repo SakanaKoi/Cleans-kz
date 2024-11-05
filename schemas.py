@@ -1,21 +1,21 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field, EmailStr
 from typing import Optional
 from models import UserRole
 
 
 # Схемы для пользователя
 class UserBase(BaseModel):
-    username: str
-    email: str
+    username: str = Field(..., description="Имя пользователя", example="john_doe")
+    email: EmailStr = Field(..., description="Email пользователя", example="john@example.com")
 
 
 class UserCreate(UserBase):
-    password: str
+    password: str = Field(..., description="Пароль пользователя", example="1223456")
 
 
 class UserResponse(UserBase):
-    id: int
-    role: UserRole
+    id: int = Field(..., description="ID пользователя", example=1)
+    role: UserRole = Field(..., description="Роль пользователя", example="client")
 
     class Config:
         orm_mode = True
@@ -23,11 +23,13 @@ class UserResponse(UserBase):
 
 # Схемы для продукта
 class ProductBase(BaseModel):
-    name: str
-    description: Optional[str] = None
-    price: float
-    category: Optional[str] = None
-    image_url: Optional[str] = None
+    name: str = Field(..., description="Название продукта", example="Чистка кожаной обуви")
+    description: Optional[str] = Field(None, description="Описание продукта",
+                                       example="Профессиональная чистка кожаной обуви")
+    price: float = Field(..., description="Цена продукта", example=49.99)
+    category: Optional[str] = Field(None, description="Категория продукта", example="Чистка")
+    image_url: Optional[str] = Field(None, description="URL изображения продукта",
+                                     example="http://example.com/images/cleaning.jpg")
 
 
 class ProductCreate(ProductBase):
@@ -35,12 +37,12 @@ class ProductCreate(ProductBase):
 
 
 class ProductUpdate(ProductBase):
-    available: Optional[int] = None
+    available: Optional[int] = Field(None, description="Доступность продукта (1 - доступен, 0 - недоступен)", example=1)
 
 
 class ProductResponse(ProductBase):
-    id: int
-    available: int
+    id: int = Field(..., description="ID продукта", example=1)
+    available: int = Field(..., description="Доступность продукта (1 - доступен, 0 - недоступен)", example=1)
 
     class Config:
         orm_mode = True
@@ -48,16 +50,16 @@ class ProductResponse(ProductBase):
 
 # Схемы для элемента корзины
 class CartItemCreate(BaseModel):
-    product_id: int
-    quantity: int
+    product_id: int = Field(..., description="ID продукта", example=1)
+    quantity: int = Field(..., description="Количество товара", example=2)
 
 
 class CartItemResponse(BaseModel):
-    id: int
-    product_id: int
-    product_name: str
-    product_price: float
-    quantity: int
+    id: int = Field(..., description="ID элемента корзины", example=1)
+    product_id: int = Field(..., description="ID продукта", example=1)
+    product_name: str = Field(..., description="Название продукта", example="Чистка кожаной обуви")
+    product_price: float = Field(..., description="Цена продукта", example=49.99)
+    quantity: int = Field(..., description="Количество товара", example=2)
 
     class Config:
         orm_mode = True
@@ -65,8 +67,8 @@ class CartItemResponse(BaseModel):
 
 # Схемы для аутентификации
 class Token(BaseModel):
-    access_token: str
-    token_type: str
+    access_token: str = Field(..., description="Токен доступа", example="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...")
+    token_type: str = Field(..., description="Тип токена", example="bearer")
 
 
 class TokenData(BaseModel):

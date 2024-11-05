@@ -16,6 +16,11 @@ app.include_router(users.router)
 
 
 # Главная страница
-@app.get("/", tags=["Main"])
+@app.get(
+    "/",
+    tags=["Main"],
+    summary="Главная страница",
+    description="Добро пожаловать в сервис чистки обуви!"
+)
 async def main_page():
     return {"message": "Добро пожаловать в сервис чистки обуви!"}

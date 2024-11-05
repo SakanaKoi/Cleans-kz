@@ -14,7 +14,16 @@ router = APIRouter(
 
 
 # Просмотр корзины
-@router.get("/displayCart", response_model=List[CartItemResponse])
+@router.get(
+    "/displayCart",
+    response_model=List[CartItemResponse],
+    summary="Просмотр корзины",
+    description="Получение списка товаров в корзине текущего пользователя.",
+    responses={
+        200: {"description": "Список товаров в корзине"},
+        401: {"description": "Неавторизованный доступ"},
+    }
+)
 def display_cart(
         db: Session = Depends(get_db),
         current_user: User = Depends(get_current_active_user),
@@ -33,7 +42,17 @@ def display_cart(
 
 
 # Добавление товара в корзину
-@router.post("/addInCart", response_model=CartItemResponse)
+@router.post(
+    "/addInCart",
+    response_model=CartItemResponse,
+    summary="Добавить товар в корзину",
+    description="Добавляет выбранный товар в корзину текущего пользователя.",
+    responses={
+        200: {"description": "Товар успешно добавлен в корзину"},
+        404: {"description": "Товар не найден или недоступен"},
+        401: {"description": "Неавторизованный доступ"},
+    }
+)
 def add_in_cart(
         cart_item: CartItemCreate,
         db: Session = Depends(get_db),
@@ -74,7 +93,16 @@ def add_in_cart(
 
 
 # Удаление товара из корзины
-@router.delete("/deleteFromCart/{item_id}")
+@router.delete(
+    "/deleteFromCart/{item_id}",
+    summary="Удалить товар из корзины",
+    description="Удаляет указанный товар из корзины текущего пользователя.",
+    responses={
+        200: {"description": "Товар успешно удален из корзины"},
+        404: {"description": "Товар в корзине не найден"},
+        401: {"description": "Неавторизованный доступ"},
+    }
+)
 def delete_from_cart(
         item_id: int,
         db: Session = Depends(get_db),
@@ -92,7 +120,15 @@ def delete_from_cart(
 
 
 # Очистка корзины
-@router.delete("/clearCart")
+@router.delete(
+    "/clearCart",
+    summary="Очистить корзину",
+    description="Удаляет все товары из корзины текущего пользователя.",
+    responses={
+        200: {"description": "Корзина успешно очищена"},
+        401: {"description": "Неавторизованный доступ"},
+    }
+)
 def clear_cart(
         db: Session = Depends(get_db),
         current_user: User = Depends(get_current_active_user),

@@ -7,7 +7,7 @@ from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 
 from config import settings
-from models import User
+from models import User, UserRole
 from database import get_db
 from schemas import TokenData
 
