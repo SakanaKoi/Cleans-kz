@@ -62,19 +62,19 @@ def register(
     "/login",
     response_model=Token,
     summary="Аутентификация пользователя",
-    description="Выполняет вход пользователя и возвращает JWT токен для дальнейших запросов.",
+    description="Выполняет вход пользователя и возвращает JWT токен для дальнейших запросов. Деактивированные пользователи не могут войти в систему.",
     responses={
         200: {"description": "Успешная аутентификация"},
-        400: {"description": "Неверное имя пользователя или пароль"},
+        400: {"description": "Неверное имя пользователя или пароль или учетная запись деактивирована"},
     }
 )
 def login_for_access_token(
-        form_data: OAuth2PasswordRequestForm = Depends(),
-        db: Session = Depends(get_db)
+    form_data: OAuth2PasswordRequestForm = Depends(),
+    db: Session = Depends(get_db)
 ):
     user = authenticate_user(db, form_data.username, form_data.password)
     if not user:
-        raise HTTPException(status_code=400, detail="Неверное имя пользователя или пароль")
+        raise HTTPException(status_code=400, detail="Неверное имя пользователя или пароль или учетная запись деактивирована")
     access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
         data={"sub": user.username}, expires_delta=access_token_expires

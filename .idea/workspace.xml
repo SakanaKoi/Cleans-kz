@@ -4,16 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="af76018f-a2b0-4fbb-a70d-5ee7950786db" name="Changes" comment="delete .env">
+    <list default="true" id="af76018f-a2b0-4fbb-a70d-5ee7950786db" name="Changes" comment="bug fixes, swagger updates">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/auth/security.py" beforeDir="false" afterPath="$PROJECT_DIR$/auth/security.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routers/auth.py" beforeDir="false" afterPath="$PROJECT_DIR$/routers/auth.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routers/cart.py" beforeDir="false" afterPath="$PROJECT_DIR$/routers/cart.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routers/products.py" beforeDir="false" afterPath="$PROJECT_DIR$/routers/products.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routers/users.py" beforeDir="false" afterPath="$PROJECT_DIR$/routers/users.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas.py" beforeDir="false" afterPath="$PROJECT_DIR$/schemas.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -104,7 +101,15 @@
       <option name="project" value="LOCAL" />
       <updated>1729586120508</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="bug fixes, swagger updates">
+      <option name="closed" value="true" />
+      <created>1730796542445</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1730796542445</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -113,6 +118,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="OAuth 2, RM, auth" />
     <MESSAGE value="delete .env" />
-    <option name="LAST_COMMIT_MESSAGE" value="delete .env" />
+    <MESSAGE value="bug fixes, swagger updates" />
+    <option name="LAST_COMMIT_MESSAGE" value="bug fixes, swagger updates" />
   </component>
 </project>

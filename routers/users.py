@@ -82,3 +82,32 @@ def deactivate_user(
     user.is_active = 0
     db.commit()
     return {"message": f"Пользователь с id {user_id} деактивирован"}
+
+
+# Активация пользователя (только для администратора)
+@router.put(
+    "/activateUser/{user_id}",
+    response_model=UserResponse,
+    summary="Активировать пользователя",
+    description="Активирует учетную запись пользователя (только для администратора).",
+    responses={
+        200: {"description": "Пользователь успешно активирован"},
+        404: {"description": "Пользователь не найден"},
+        401: {"description": "Неавторизованный доступ"},
+        403: {"description": "Недостаточно прав"},
+    }
+)
+def activate_user(
+    user_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_active_admin),
+):
+    user = db.query(User).filter(User.id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="Пользователь не найден")
+    if user.is_active == 1:
+        return user  # Пользователь уже активен
+    user.is_active = 1
+    db.commit()
+    db.refresh(user)
+    return user

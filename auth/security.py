@@ -36,8 +36,12 @@ def get_user(db: Session, username: str):
 # Аутентификация пользователя
 def authenticate_user(db: Session, username: str, password: str):
     user = get_user(db, username)
-    if not user or not verify_password(password, user.hashed_password):
+    if not user:
         return False
+    if not verify_password(password, user.hashed_password):
+        return False
+    if user.is_active == 0:
+        return False  # Пользователь деактивирован
     return user
 
 
