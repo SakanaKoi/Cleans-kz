@@ -1,5 +1,6 @@
-from sqlalchemy import Column, Integer, String, Float, Text, ForeignKey, Enum
+from sqlalchemy import Column, Integer, String, Float, Text, DateTime, ForeignKey, Enum
 from sqlalchemy.orm import relationship
+from datetime import datetime
 from database import Base
 import enum
 
@@ -21,6 +22,7 @@ class User(Base):
     is_active = Column(Integer, default=1)  # 1 - активен, 0 - неактивен
 
     cart_items = relationship("CartItem", back_populates="user")
+    orders = relationship("Order", back_populates="user")
 
 
 # Модель товара
@@ -49,3 +51,37 @@ class CartItem(Base):
 
     user = relationship("User", back_populates="cart_items")
     product = relationship("Product", back_populates="cart_items")
+
+
+class OrderStatus(enum.Enum):
+    pending = "В ожидании"
+    processing = "В обработке"
+    shipped = "Отправлен"
+    delivered = "Доставлен"
+    cancelled = "Отменен"
+
+
+class Order(Base):
+    __tablename__ = "orders"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"))
+    order_date = Column(DateTime, default=datetime.utcnow)
+    status = Column(Enum(OrderStatus), default=OrderStatus.pending)
+    total_price = Column(Float, nullable=False)
+
+    user = relationship("User", back_populates="orders")
+    items = relationship("OrderItem", back_populates="order")
+
+
+class OrderItem(Base):
+    __tablename__ = "order_items"
+
+    id = Column(Integer, primary_key=True, index=True)
+    order_id = Column(Integer, ForeignKey("orders.id"))
+    product_id = Column(Integer, ForeignKey("products.id"))
+    quantity = Column(Integer, nullable=False)
+    price = Column(Float, nullable=False)
+
+    order = relationship("Order", back_populates="items")
+    product = relationship("Product")

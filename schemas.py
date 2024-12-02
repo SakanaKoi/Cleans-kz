@@ -1,6 +1,7 @@
 from pydantic import BaseModel, Field, EmailStr
-from typing import Optional
-from models import UserRole
+from typing import Optional, List
+from models import UserRole, OrderStatus
+from datetime import datetime
 
 
 # Схемы для пользователя
@@ -73,3 +74,38 @@ class Token(BaseModel):
 
 class TokenData(BaseModel):
     username: Optional[str] = None
+
+
+class OrderItemCreate(BaseModel):
+    product_id: int = Field(..., description="ID продукта", example=1)
+    quantity: int = Field(..., description="Количество", example=2)
+
+
+class OrderCreate(BaseModel):
+    items: List[OrderItemCreate]
+    total_price: float = Field(..., description="Общая стоимость", example=99.98)
+
+
+class OrderItemResponse(BaseModel):
+    product_id: int
+    product_name: str
+    quantity: int
+    price: float
+
+    class Config:
+        orm_mode = True
+
+
+class OrderStatusUpdate(BaseModel):
+    status: OrderStatus = Field(..., description="Новый статус заказа", example="processing")
+
+
+class OrderResponse(BaseModel):
+    id: int
+    order_date: datetime
+    status: OrderStatus
+    total_price: float
+    items: List[OrderItemResponse]
+
+    class Config:
+        orm_mode = True
